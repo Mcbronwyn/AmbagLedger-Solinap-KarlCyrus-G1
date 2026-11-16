@@ -236,6 +236,7 @@
             {% block nav_links %}
                 {% if user.is_authenticated %}
                     <a href="{% url 'accounts:dashboard' %}">Dashboard</a>
+                    <a href="{% url 'accounts:profile' %}">My Profile</a>
                     <span style="font-size: 0.9rem; color: var(--muted);">{{ user.full_name }}</span>
                     <span class="role-badge {% if user.is_treasurer %}role-treasurer{% else %}role-member{% endif %}">
                         {{ user.role }}

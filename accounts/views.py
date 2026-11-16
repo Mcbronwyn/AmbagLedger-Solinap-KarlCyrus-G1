@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 from .decorators import member_required, treasurer_required
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, ProfileUpdateForm, RegistrationForm
 
 
 def register_view(request):
@@ -89,3 +89,23 @@ def treasurer_dashboard_view(request):
 def member_dashboard_view(request):
     """Read-only transparency dashboard for Class Members / Enrolled Students (F-01, F-09)."""
     return render(request, 'accounts/member_dashboard.html')
+
+
+@login_required
+def profile_view(request):
+    """
+    Allows an authenticated user to view and edit strictly their own profile details.
+    Bound directly to request.user to prevent unauthorized access to other profiles.
+    """
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your profile has been updated successfully.')
+            return redirect('accounts:profile')
+        else:
+            messages.error(request, 'Could not update profile. Please fix the errors below.')
+    else:
+        form = ProfileUpdateForm(instance=request.user)
+
+    return render(request, 'accounts/profile.html', {'form': form})

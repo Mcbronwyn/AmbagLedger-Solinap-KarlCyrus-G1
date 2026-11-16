@@ -135,3 +135,59 @@ class LoginForm(forms.Form):
 
     def get_user(self):
         return self.user_cache
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    """
+    Allows authenticated users to update only their own profile details.
+    Enforces unique email across all other users (BR-01).
+    """
+
+    full_name = forms.CharField(
+        max_length=100,
+        required=True,
+        label='Full Name',
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Enter your full name',
+            'class': 'form-control',
+        }),
+    )
+    email = forms.EmailField(
+        max_length=100,
+        required=True,
+        label='Institutional Email',
+        widget=forms.EmailInput(attrs={
+            'placeholder': 'Enter your institutional email',
+            'class': 'form-control',
+        }),
+    )
+    contact_number = forms.CharField(
+        max_length=20,
+        required=False,
+        label='Contact Number (Optional)',
+        widget=forms.TextInput(attrs={
+            'placeholder': 'e.g., 09171234567',
+            'class': 'form-control',
+        }),
+    )
+
+    class Meta:
+        model = CustomUser
+        fields = ('full_name', 'email', 'contact_number')
+
+    def clean_email(self):
+        """Enforces BR-01 while allowing the current user to retain their existing email."""
+        email = self.cleaned_data.get('email', '').strip().lower()
+        if CustomUser.objects.filter(email__iexact=email).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError('Another account is already registered with this email address.')
+        return email
+
+    def clean_full_name(self):
+        full_name = self.cleaned_data.get('full_name', '').strip()
+        if not full_name:
+            raise forms.ValidationError('Full name is required.')
+        return full_name
+
+    def clean_contact_number(self):
+        contact_number = self.cleaned_data.get('contact_number', '').strip()
+        return contact_number or None

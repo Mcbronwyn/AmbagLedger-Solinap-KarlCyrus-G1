@@ -10,4 +10,5 @@ urlpatterns = [
     path('dashboard/', views.dashboard_redirect_view, name='dashboard'),
     path('dashboard/treasurer/', views.treasurer_dashboard_view, name='treasurer_dashboard'),
     path('dashboard/member/', views.member_dashboard_view, name='member_dashboard'),
+    path('profile/', views.profile_view, name='profile'),
 ]
