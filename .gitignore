@@ -1,28 +1,22 @@
-# Virtual environments
+# Virtual Environment
 venv/
 .venv/
-env/
 
-# Environment variables & secrets
+# Environment Variables & Secrets
 .env
+.env.*
 
-# Python cache & compiled files
+# Python Cache & Compiled Files
 __pycache__/
 *.py[cod]
 *$py.class
-*.egg-info/
-.pytest_cache/
 
-# Local databases & uploaded user media
-*.sqlite3
+# Django Local / Generated Files
 db.sqlite3
-media/
+/staticfiles/
+/media/
 
-# Static build output
-staticfiles/
-
-# IDE & OS metadata
+# IDE & OS Files
 .vscode/
-.idea/
 .DS_Store
 Thumbs.db
