@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.shortcuts import render
-from django.urls import path
+from django.urls import include, path
 
 
 def setup_check(request):
@@ -9,5 +9,6 @@ def setup_check(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('accounts.urls')),
     path('', setup_check, name='home'),
 ]
