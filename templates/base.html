@@ -18,6 +18,8 @@
             --success-text: #065f46;
             --error-bg: #fef2f2;
             --error-text: #991b1b;
+            --info-bg: #eff6ff;
+            --info-text: #1e40af;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -53,6 +55,29 @@
         }
         .nav-links a:hover {
             color: var(--primary);
+        }
+        .role-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.2rem 0.55rem;
+            border-radius: 999px;
+            background: #ccfbf1;
+            color: #115e59;
+            letter-spacing: 0.03em;
+        }
+        .btn-logout {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.4rem 0.85rem;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-logout:hover {
+            border-color: var(--error-text);
+            color: var(--error-text);
         }
         .container {
             max-width: 960px;
@@ -126,6 +151,7 @@
         }
         .alert-success { background: var(--success-bg); color: var(--success-text); border: 1px solid #a7f3d0; }
         .alert-error { background: var(--error-bg); color: var(--error-text); border: 1px solid #fecaca; }
+        .alert-info { background: var(--info-bg); color: var(--info-text); border: 1px solid #bfdbfe; }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
@@ -134,7 +160,15 @@
         <a href="{% url 'home' %}" class="brand">AmbagLedger</a>
         <div class="nav-links">
             {% block nav_links %}
-                {% if not user.is_authenticated %}
+                {% if user.is_authenticated %}
+                    <span style="font-size: 0.9rem; color: var(--muted);">{{ user.full_name }}</span>
+                    <span class="role-badge">{{ user.role }}</span>
+                    <form method="post" action="{% url 'accounts:logout' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-logout">Log Out</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}">Log In</a>
                     <a href="{% url 'accounts:register' %}">Register</a>
                 {% endif %}
             {% endblock %}
@@ -152,9 +186,9 @@
 
         {% block content %}
         <div class="card">
-            <h2>Welcome to AmbagLedger</h2>
+            <h2>Authenticated Session Active</h2>
             <p style="color: var(--muted); margin-top: 0.5rem;">
-                Transparent Class Fund and Micro-Contribution Tracker.
+                Signed in as <strong>{{ user.full_name }}</strong> ({{ user.email }}) with role <strong>{{ user.role }}</strong>.
             </p>
         </div>
         {% endblock %}

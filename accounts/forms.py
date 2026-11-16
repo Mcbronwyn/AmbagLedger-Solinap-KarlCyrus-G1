@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 
@@ -80,3 +81,57 @@ class RegistrationForm(UserCreationForm):
     def clean_contact_number(self):
         contact_number = self.cleaned_data.get('contact_number', '').strip()
         return contact_number or None
+
+
+class LoginForm(forms.Form):
+    """
+    Credential login form for AmbagLedger (F-01).
+    Authenticates users via email and password.
+    """
+
+    email = forms.EmailField(
+        max_length=100,
+        required=True,
+        label='Institutional Email',
+        widget=forms.EmailInput(attrs={
+            'placeholder': 'e.g., juan.delacruz@cit.edu',
+            'class': 'form-control',
+            'autofocus': True,
+        }),
+    )
+    password = forms.CharField(
+        required=True,
+        label='Password',
+        strip=False,
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Enter your password',
+            'class': 'form-control',
+        }),
+    )
+
+    def __init__(self, request=None, *args, **kwargs):
+        self.request = request
+        self.user_cache = None
+        super().__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get('email')
+        password = cleaned_data.get('password')
+
+        if email and password:
+            normalized_email = email.strip().lower()
+            self.user_cache = authenticate(
+                self.request,
+                email=normalized_email,
+                password=password,
+            )
+            if self.user_cache is None:
+                raise forms.ValidationError('Invalid email address or password.')
+            if not self.user_cache.is_active:
+                raise forms.ValidationError('This account is inactive.')
+
+        return cleaned_data
+
+    def get_user(self):
+        return self.user_cache

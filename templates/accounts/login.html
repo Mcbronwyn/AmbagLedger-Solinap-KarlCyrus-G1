@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Log In – AmbagLedger{% endblock %}
+
+{% block content %}
+<div class="card form-card">
+    <h2 style="margin-bottom: 0.35rem;">Sign In to AmbagLedger</h2>
+    <p style="color: var(--muted); font-size: 0.92rem; margin-bottom: 1.5rem;">
+        Enter your institutional email and password to access your class ledger.
+    </p>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-error">
+                {% for error in form.non_field_errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+
+                {% if field.errors %}
+                    <ul class="field-errors">
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn">Log In</button>
+    </form>
+
+    <p style="margin-top: 1.25rem; font-size: 0.9rem; color: var(--muted); text-align: center;">
+        Don’t have an account yet?
+        <a href="{% url 'accounts:register' %}" style="color: var(--primary); font-weight: 600; text-decoration: none;">
+            Create an account
+        </a>
+    </p>
+</div>
+{% endblock %}

@@ -1,14 +1,9 @@
 from django.contrib import admin
-from django.shortcuts import render
 from django.urls import include, path
-
-
-def setup_check(request):
-    return render(request, 'base.html')
-
+from accounts.views import home_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-    path('', setup_check, name='home'),
+    path('', home_view, name='home'),
 ]
