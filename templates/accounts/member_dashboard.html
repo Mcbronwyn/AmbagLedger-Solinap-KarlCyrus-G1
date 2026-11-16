@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Treasurer Dashboard – AmbagLedger{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom: 1.5rem;">
+    <div class="dashboard-header">
+        <div>
+            <span class="role-badge role-treasurer">TREASURER WORKSPACE</span>
+            <h2 style="margin-top: 0.5rem;">Treasurer Command Dashboard</h2>
+            <p style="color: var(--muted); font-size: 0.92rem; margin-top: 0.25rem;">
+                Signed in as <strong>{{ user.full_name }}</strong> ({{ user.email }}) · Administrative Write Access
+            </p>
+        </div>
+    </div>
+
+    <div class="role-nav" aria-label="Treasurer Navigation">
+        <span class="active">Overview</span>
+        <span>Section Workspaces</span>
+        <span>Class Roster (Max 50)</span>
+        <span>Collection Drives</span>
+        <span>Cash Payments</span>
+        <span>Disbursements &amp; Receipts</span>
+        <span>Ledger Reports (CSV)</span>
+    </div>
+
+    <p style="font-size: 0.92rem; color: var(--muted);">
+        As a <strong>Class Treasurer / Finance Officer</strong>, you initialize section workspaces, manage student rosters, configure contribution campaigns, record physical cash installments, and publish receipt-backed disbursements.
+    </p>
+</div>
+
+<div class="grid">
+    <div class="module-card">
+        <span class="module-tag">F-02 · Workspace Setup</span>
+        <h3>Class Section Workspaces</h3>
+        <p>Initialize class sections with academic term tags and unique alphanumeric invite codes for student onboarding.</p>
+    </div>
+
+    <div class="module-card">
+        <span class="module-tag">F-03 · Roster Governance</span>
+        <h3>Student Roster Moderation</h3>
+        <p>Manage active class enrollments up to the 50-student section boundary and verify student ID numbers.</p>
+    </div>
+
+    <div class="module-card">
+        <span class="module-tag">F-04 · Campaigns</span>
+        <h3>Collection Drive Setup</h3>
+        <p>Configure contribution drives with per-capita target amounts (PHP), purpose notes, and submission deadlines.</p>
+    </div>
+
+    <div class="module-card">
+        <span class="module-tag">F-05 &amp; F-06 · Cash Ledger</span>
+        <h3>Cash Payment Logging &amp; Voids</h3>
+        <p>Record physical cash installments with automatic partial-payment deduction arithmetic and auditable void controls.</p>
+    </div>
+
+    <div class="module-card">
+        <span class="module-tag">F-07 &amp; F-08 · Audit Proof</span>
+        <h3>Disbursements &amp; Receipt Vault</h3>
+        <p>Log outward expenses tied to drives and upload mandatory PNG/JPEG photographic receipts for class transparency.</p>
+    </div>
+
+    <div class="module-card">
+        <span class="module-tag">F-10 · Reporting</span>
+        <h3>Semester Financial Summary</h3>
+        <p>Compile total collections, remaining student arrears, and disbursements into an exportable CSV audit ledger.</p>
+    </div>
+</div>
+{% endblock %}

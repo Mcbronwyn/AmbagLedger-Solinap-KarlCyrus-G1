@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}403 Access Denied – AmbagLedger{% endblock %}
+
+{% block content %}
+<div class="card form-card" style="text-align: center;">
+    <span class="role-badge role-treasurer" style="background: var(--error-bg); color: var(--error-text);">
+        403 FORBIDDEN
+    </span>
+    <h2 style="margin-top: 0.85rem; margin-bottom: 0.5rem;">Access Restricted</h2>
+    <p style="color: var(--muted); font-size: 0.94rem; margin-bottom: 1.5rem;">
+        Your current account role (<strong>{{ user.get_role_display }}</strong>) does not have permission
+        to view the{% if required_role %} <strong>{{ required_role }}</strong>{% endif %} page.
+    </p>
+    <a href="{% url 'accounts:dashboard' %}" class="btn btn-inline">Return to My Dashboard</a>
+</div>
+{% endblock %}
