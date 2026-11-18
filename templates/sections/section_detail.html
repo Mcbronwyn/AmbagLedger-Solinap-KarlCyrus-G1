@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ section.section_name }} – AmbagLedger{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom: 1.5rem;">
+    <div class="dashboard-header">
+        <div>
+            <span class="module-tag">F-02 · Section Workspace</span>
+            <h2 style="margin-top: 0.35rem;">{{ section.section_name }}</h2>
+            <p style="color: var(--muted); font-size: 0.92rem;">
+                Academic Term: <strong>{{ section.academic_term }}</strong> · Created {{ section.created_at|date:"M d, Y" }}
+            </p>
+        </div>
+        <div class="action-group">
+            <a href="{% url 'sections:section_list' %}" class="btn btn-inline btn-secondary">← All Sections</a>
+            <a href="{% url 'sections:section_update' section.section_id %}" class="btn btn-inline btn-secondary">Edit</a>
+            <a href="{% url 'sections:section_delete' section.section_id %}" class="btn btn-inline btn-danger">Delete</a>
+        </div>
+    </div>
+
+    <div style="background: #f8fafc; border: 1px solid var(--border-light); border-radius: 8px; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <div>
+            <div style="font-size: 0.82rem; font-weight: 700; text-transform: uppercase; color: var(--muted);">
+                Student Onboarding Invite Code (BR-03)
+            </div>
+            <p style="font-size: 0.88rem; color: var(--muted);">
+                Share this unique code with students in <strong>{{ section.section_name }}</strong> so they can enroll in your roster.
+            </p>
+        </div>
+        <span class="invite-code" style="font-size: 1.15rem; padding: 0.4rem 0.9rem;">{{ section.invite_code }}</span>
+    </div>
+</div>
+
+<div class="card">
+    <span class="module-tag">F-03 · Roster Preview</span>
+    <h3 style="margin-top: 0.35rem; margin-bottom: 0.35rem;">Class Roster (Max 50 Active Students)</h3>
+    <p style="color: var(--muted); font-size: 0.9rem;">
+        Student enrollment via invite code and roster moderation controls will be connected here in the next feature branch (<code>feature/member-onboarding</code>).
+    </p>
+</div>
+{% endblock %}

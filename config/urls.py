@@ -4,6 +4,7 @@ from accounts.views import dashboard_redirect_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
     path('', dashboard_redirect_view, name='home'),
+    path('accounts/', include('accounts.urls')),
+    path('sections/', include('sections.urls')),
 ]
