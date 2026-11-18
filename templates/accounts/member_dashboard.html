@@ -3,52 +3,57 @@
 {% block title %}Member Dashboard – AmbagLedger{% endblock %}
 
 {% block content %}
-<div class="card" style="margin-bottom: 1.5rem;">
+<div class="card" style="margin-bottom: 1.75rem;">
     <div class="dashboard-header">
         <div>
-            <span class="role-badge role-member">MEMBER WORKSPACE</span>
-            <h2 style="margin-top: 0.5rem;">Member Transparency Dashboard</h2>
-            <p style="color: var(--muted); font-size: 0.92rem; margin-top: 0.25rem;">
-                Signed in as <strong>{{ user.full_name }}</strong> ({{ user.email }}) · Read-Only Ledger Access
+            <h1 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Member Dashboard</h1>
+            <p style="color: var(--muted); font-size: 0.92rem;">
+                Enroll in your class sections using an invite code and track your active roster standing.
             </p>
         </div>
         <a href="{% url 'sections:join_section' %}" class="btn btn-inline">+ Join Class Section</a>
     </div>
-
-    <div class="role-nav" aria-label="Member Navigation">
-        <span class="active">Overview</span>
-        <a href="{% url 'sections:member_section_list' %}">My Class Sections</a>
-        <a href="{% url 'sections:join_section' %}">Join via Invite Code</a>
-        <span>Payment Status</span>
-        <span>Expense &amp; Receipt Feed</span>
-    </div>
-
-    <p style="font-size: 0.92rem; color: var(--muted);">
-        As a <strong>Class Member / Enrolled Student</strong>, you enroll in class sections using your treasurer's invite code and inspect real-time collection progress, personal payment balances, and receipt-backed expenses.
-    </p>
 </div>
 
-<div class="grid">
-    <div class="module-card" style="border-color: #99f6e4;">
-        <span class="module-tag">F-03 · Class Onboarding</span>
-        <h3>My Class Section Workspaces</h3>
-        <p style="margin-bottom: 1rem;">Enroll in your class section via invite code and view your active roster standing and student ID record.</p>
+<div class="section-label">Active Workspace Modules</div>
+<div class="grid" style="margin-bottom: 1.75rem;">
+    <div class="module-card is-active">
+        <div>
+            <div class="module-header">
+                <span class="module-tag">Class Onboarding</span>
+            </div>
+            <h3>My Class Section Workspaces</h3>
+            <p style="margin-bottom: 1.15rem;">Join a class section using its 8-character invite code and view your enrolled student ID and active roster standing.</p>
+        </div>
         <div class="action-group">
             <a href="{% url 'sections:member_section_list' %}" class="btn btn-inline">My Sections</a>
-            <a href="{% url 'sections:join_section' %}" class="btn btn-inline btn-secondary">+ Join Code</a>
+            <a href="{% url 'sections:join_section' %}" class="btn btn-inline btn-secondary">+ Join via Code</a>
+        </div>
+    </div>
+</div>
+
+<div class="section-label">Upcoming Transparency Modules</div>
+<div class="grid">
+    <div class="module-card is-upcoming">
+        <div>
+            <div class="module-header">
+                <span class="module-tag upcoming">Transparency Feed</span>
+                <span style="font-size: 0.75rem; color: var(--subtle-text); font-weight: 600;">Next Increment</span>
+            </div>
+            <h3>Collection Progress &amp; Balances</h3>
+            <p>Track campaign target amounts, per-student payment statuses (Paid, Partial, Pending), and remaining balances in real time.</p>
         </div>
     </div>
 
-    <div class="module-card">
-        <span class="module-tag">F-09 · Transparency Feed</span>
-        <h3>Collection Progress &amp; Balances</h3>
-        <p>Track campaign target amounts, per-student payment statuses (Paid, Partial, Pending), and remaining arrears in real time[cite: 1].</p>
-    </div>
-
-    <div class="module-card">
-        <span class="module-tag">F-08 · Audit Verification</span>
-        <h3>Disbursement &amp; Receipt Inspector</h3>
-        <p>Review chronological outward expenses logged by your treasurer and inspect uploaded paper receipt photos[cite: 1].</p>
+    <div class="module-card is-upcoming">
+        <div>
+            <div class="module-header">
+                <span class="module-tag upcoming">Audit Verification</span>
+                <span style="font-size: 0.75rem; color: var(--subtle-text); font-weight: 600;">Next Increment</span>
+            </div>
+            <h3>Disbursement &amp; Receipt Inspector</h3>
+            <p>Review chronological outward expenses logged by your treasurer and inspect uploaded paper receipt photos.</p>
+        </div>
     </div>
 </div>
 {% endblock %}

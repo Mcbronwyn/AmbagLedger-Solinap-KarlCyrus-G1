@@ -3,72 +3,81 @@
 {% block title %}Treasurer Dashboard – AmbagLedger{% endblock %}
 
 {% block content %}
-<div class="card" style="margin-bottom: 1.5rem;">
+<div class="card" style="margin-bottom: 1.75rem;">
     <div class="dashboard-header">
         <div>
-            <span class="role-badge role-treasurer">TREASURER WORKSPACE</span>
-            <h2 style="margin-top: 0.5rem;">Treasurer Command Dashboard</h2>
-            <p style="color: var(--muted); font-size: 0.92rem; margin-top: 0.25rem;">
-                Signed in as <strong>{{ user.full_name }}</strong> ({{ user.email }}) · Administrative Write Access
+            <h1 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Treasurer Dashboard</h1>
+            <p style="color: var(--muted); font-size: 0.92rem;">
+                Create class section workspaces, share invite codes, and moderate active student rosters.
             </p>
         </div>
         <a href="{% url 'sections:section_create' %}" class="btn btn-inline">+ New Class Section</a>
     </div>
-
-    <div class="role-nav" aria-label="Treasurer Navigation">
-        <span class="active">Overview</span>
-        <a href="{% url 'sections:section_list' %}">Section Workspaces</a>
-        <span>Class Roster (Max 50)</span>
-        <span>Collection Drives</span>
-        <span>Cash Payments</span>
-        <span>Disbursements &amp; Receipts</span>
-        <span>Ledger Reports (CSV)</span>
-    </div>
-
-    <p style="font-size: 0.92rem; color: var(--muted);">
-        As a <strong>Class Treasurer / Finance Officer</strong>, you initialize section workspaces, manage student rosters, configure contribution campaigns, record physical cash installments, and publish receipt-backed disbursements.
-    </p>
 </div>
 
-<div class="grid">
-    <div class="module-card" style="border-color: #99f6e4;">
-        <span class="module-tag">F-02 · Workspace Setup</span>
-        <h3>Class Section Workspaces</h3>
-        <p style="margin-bottom: 1rem;">Initialize class sections with academic term tags and unique alphanumeric invite codes for student onboarding.</p>
+<div class="section-label">Active Workspace Modules</div>
+<div class="grid" style="margin-bottom: 1.75rem;">
+    <div class="module-card is-active">
+        <div>
+            <div class="module-header">
+                <span class="module-tag">Workspace Setup</span>
+            </div>
+            <h3>Class Section Workspaces</h3>
+            <p style="margin-bottom: 1.15rem;">Create and manage class sections with academic term tags and auto-generated 8-character alphanumeric invite codes.</p>
+        </div>
         <div class="action-group">
             <a href="{% url 'sections:section_list' %}" class="btn btn-inline">Manage Sections</a>
-            <a href="{% url 'sections:section_create' %}" class="btn btn-inline btn-secondary">+ Create</a>
+            <a href="{% url 'sections:section_create' %}" class="btn btn-inline btn-secondary">+ Create Section</a>
         </div>
     </div>
 
-    <div class="module-card">
-        <span class="module-tag">F-03 · Roster Governance</span>
-        <h3>Student Roster Moderation</h3>
-        <p>Manage active class enrollments up to the 50-student section boundary and verify student ID numbers.</p>
+    <div class="module-card is-active">
+        <div>
+            <div class="module-header">
+                <span class="module-tag">Roster Governance</span>
+            </div>
+            <h3>Student Roster Moderation</h3>
+            <p style="margin-bottom: 1.15rem;">Inspect enrolled students inside any section workspace, verify institutional ID numbers, and toggle active status (max 50 students).</p>
+        </div>
+        <div class="action-group">
+            <a href="{% url 'sections:section_list' %}" class="btn btn-inline btn-secondary">Open Section Rosters</a>
+        </div>
+    </div>
+</div>
+
+<div class="section-label">Upcoming Ledger Modules</div>
+<div class="grid">
+    <div class="module-card is-upcoming">
+        <div>
+            <div class="module-header">
+                <span class="module-tag upcoming">Campaigns</span>
+                <span style="font-size: 0.75rem; color: var(--subtle-text); font-weight: 600;">Next Increment</span>
+            </div>
+            <h3>Collection Drive Setup</h3>
+            <p>Configure contribution drives with per-capita target amounts (PHP), purpose notes, and submission deadlines.</p>
+        </div>
     </div>
 
-    <div class="module-card">
-        <span class="module-tag">F-04 · Campaigns</span>
-        <h3>Collection Drive Setup</h3>
-        <p>Configure contribution drives with per-capita target amounts (PHP), purpose notes, and submission deadlines.</p>
+    <div class="module-card is-upcoming">
+        <div>
+            <div class="module-header">
+                <span class="module-tag upcoming">Cash Ledger</span>
+                <span style="font-size: 0.75rem; color: var(--subtle-text); font-weight: 600;">Next Increment</span>
+            </div>
+            <h3>Cash Payment Logging &amp; Voids</h3>
+            <p>Record physical cash installments with automatic partial-payment deduction arithmetic and auditable void controls.</p>
+        </div>
     </div>
 
-    <div class="module-card">
-        <span class="module-tag">F-05 &amp; F-06 · Cash Ledger</span>
-        <h3>Cash Payment Logging &amp; Voids</h3>
-        <p>Record physical cash installments with automatic partial-payment deduction arithmetic and auditable void controls.</p>
-    </div>
-
-    <div class="module-card">
-        <span class="module-tag">F-07 &amp; F-08 · Audit Proof</span>
-        <h3>Disbursements &amp; Receipt Vault</h3>
-        <p>Log outward expenses tied to drives and upload mandatory PNG/JPEG photographic receipts for class transparency.</p>
-    </div>
-
-    <div class="module-card">
-        <span class="module-tag">F-10 · Reporting</span>
-        <h3>Semester Financial Summary</h3>
-        <p>Compile total collections, remaining student arrears, and disbursements into an exportable CSV audit ledger.</p>
+    <div class="module-card is-upcoming">
+        <div>
+            <div class="module-header">
+                <span class="module-tag upcoming">Audit Proof &amp; Export</span>
+                <span style="font-size: 0.75rem; color: var(--subtle-text); font-weight: 600;">Next Increment</span>
+            </div>
+            <h3>Disbursements, Receipts &amp; CSV</h3>
+            <p>Log outward expenses with mandatory PNG/JPEG receipt uploads and export semester-end financial summaries.</p>
+        </div>
     </div>
 </div>
 {% endblock %}
