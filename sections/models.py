@@ -3,6 +3,8 @@ import string
 from django.conf import settings
 from django.db import models
 
+MAX_ACTIVE_STUDENTS = 50
+
 
 def generate_invite_code(length=8):
     """Generate a unique uppercase alphanumeric invite code (BR-03)."""
@@ -30,6 +32,14 @@ class Section(models.Model):
         db_table = 'sections'
         ordering = ['-created_at']
 
+    @property
+    def active_member_count(self):
+        return self.memberships.filter(is_active=True).count()
+
+    @property
+    def has_roster_capacity(self):
+        return self.active_member_count < MAX_ACTIVE_STUDENTS
+
     def save(self, *args, **kwargs):
         if not self.invite_code:
             self.invite_code = generate_invite_code()
@@ -39,3 +49,35 @@ class Section(models.Model):
 
     def __str__(self):
         return f"{self.section_name} ({self.academic_term})"
+
+
+class SectionMember(models.Model):
+    membership_id = models.AutoField(primary_key=True)
+    section = models.ForeignKey(
+        Section,
+        on_delete=models.CASCADE,
+        db_column='section_id',
+        related_name='memberships',
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        db_column='user_id',
+        related_name='section_memberships',
+    )
+    student_id_number = models.CharField(max_length=20)
+    is_active = models.BooleanField(default=True)
+    joined_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'section_members'
+        ordering = ['-is_active', 'joined_at']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['section', 'user'],
+                name='unique_section_user',
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.user.full_name} ({self.student_id_number}) – {self.section.section_name}"
