@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Class Section Workspaces – AmbagLedger{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="dashboard-header">
+        <div>
+            <span class="module-tag">F-02 · Class Section Workspaces</span>
+            <h2 style="margin-top: 0.35rem;">My Class Sections</h2>
+            <p style="color: var(--muted); font-size: 0.92rem;">
+                Create and manage your class section workspaces and share invite codes with students.
+            </p>
+        </div>
+        <div class="action-group">
+            <a href="{% url 'accounts:treasurer_dashboard' %}" class="btn btn-inline btn-secondary">← Dashboard</a>
+            <a href="{% url 'sections:section_create' %}" class="btn btn-inline">+ Create Section</a>
+        </div>
+    </div>
+
+    {% if sections %}
+        <div style="overflow-x: auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Section Name</th>
+                        <th>Academic Term</th>
+                        <th>Invite Code</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for section in sections %}
+                        <tr>
+                            <td><strong>{{ section.section_name }}</strong></td>
+                            <td>{{ section.academic_term }}</td>
+                            <td><span class="invite-code">{{ section.invite_code }}</span></td>
+                            <td style="color: var(--muted);">{{ section.created_at|date:"M d, Y" }}</td>
+                            <td>
+                                <div class="action-group">
+                                    <a href="{% url 'sections:section_detail' section.section_id %}" class="btn btn-inline">Open</a>
+                                    <a href="{% url 'sections:section_update' section.section_id %}" class="btn btn-inline btn-secondary">Edit</a>
+                                    <a href="{% url 'sections:section_delete' section.section_id %}" class="btn btn-inline btn-danger">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 2.5rem 1rem; border: 1px dashed var(--border); border-radius: 8px; margin-top: 1rem;">
+            <h3 style="margin-bottom: 0.4rem;">No Class Sections Yet</h3>
+            <p style="color: var(--muted); font-size: 0.92rem; margin-bottom: 1.1rem;">
+                Initialize your first class section workspace to generate a unique invite code for student onboarding.
+            </p>
+            <a href="{% url 'sections:section_create' %}" class="btn btn-inline">+ Create First Section</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
