@@ -12,11 +12,12 @@
                 Signed in as <strong>{{ user.full_name }}</strong> ({{ user.email }}) · Administrative Write Access
             </p>
         </div>
+        <a href="{% url 'sections:section_create' %}" class="btn btn-inline">+ New Class Section</a>
     </div>
 
     <div class="role-nav" aria-label="Treasurer Navigation">
         <span class="active">Overview</span>
-        <span>Section Workspaces</span>
+        <a href="{% url 'sections:section_list' %}">Section Workspaces</a>
         <span>Class Roster (Max 50)</span>
         <span>Collection Drives</span>
         <span>Cash Payments</span>
@@ -30,10 +31,14 @@
 </div>
 
 <div class="grid">
-    <div class="module-card">
+    <div class="module-card" style="border-color: #99f6e4;">
         <span class="module-tag">F-02 · Workspace Setup</span>
         <h3>Class Section Workspaces</h3>
-        <p>Initialize class sections with academic term tags and unique alphanumeric invite codes for student onboarding.</p>
+        <p style="margin-bottom: 1rem;">Initialize class sections with academic term tags and unique alphanumeric invite codes for student onboarding.</p>
+        <div class="action-group">
+            <a href="{% url 'sections:section_list' %}" class="btn btn-inline">Manage Sections</a>
+            <a href="{% url 'sections:section_create' %}" class="btn btn-inline btn-secondary">+ Create</a>
+        </div>
     </div>
 
     <div class="module-card">

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ section.section_name }} – Class Workspace{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom: 1.5rem;">
+    <div class="dashboard-header">
+        <div>
+            <span class="module-tag">Read-Only Class Workspace</span>
+            <h2 style="margin-top: 0.35rem;">{{ section.section_name }}</h2>
+            <p style="color: var(--muted); font-size: 0.92rem;">
+                Academic Term: <strong>{{ section.academic_term }}</strong> · Managed by <strong>{{ section.treasurer.full_name }}</strong>
+            </p>
+        </div>
+        <a href="{% url 'sections:member_section_list' %}" class="btn btn-inline btn-secondary">← My Sections</a>
+    </div>
+
+    {% if not membership.is_active %}
+        <div class="alert alert-error">
+            Your roster status in this section is currently marked as <strong>Removed</strong> by the class treasurer. Contact {{ section.treasurer.full_name }} if this was in error.
+        </div>
+    {% endif %}
+
+    <div class="grid" style="margin-top: 1rem;">
+        <div class="module-card">
+            <span class="module-tag">Enrollment Record</span>
+            <h3>{{ membership.student_id_number }}</h3>
+            <p>Joined on {{ membership.joined_at|date:"M d, Y" }} · Status: <strong>{% if membership.is_active %}Active{% else %}Removed{% endif %}</strong></p>
+        </div>
+        <div class="module-card">
+            <span class="module-tag">Section Capacity</span>
+            <h3>{{ active_count }} / {{ max_students }} Active Students</h3>
+            <p>Invite Code: <span class="invite-code">{{ section.invite_code }}</span></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

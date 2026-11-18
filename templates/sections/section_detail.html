@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ section.section_name }} – AmbagLedger{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom: 1.5rem;">
+    <div class="dashboard-header">
+        <div>
+            <span class="module-tag">F-02 · Section Workspace</span>
+            <h2 style="margin-top: 0.35rem;">{{ section.section_name }}</h2>
+            <p style="color: var(--muted); font-size: 0.92rem;">
+                Academic Term: <strong>{{ section.academic_term }}</strong> · Created {{ section.created_at|date:"M d, Y" }}
+            </p>
+        </div>
+        <div class="action-group">
+            <a href="{% url 'sections:section_list' %}" class="btn btn-inline btn-secondary">← All Sections</a>
+            <a href="{% url 'sections:section_update' section.section_id %}" class="btn btn-inline btn-secondary">Edit</a>
+            <a href="{% url 'sections:section_delete' section.section_id %}" class="btn btn-inline btn-danger">Delete</a>
+        </div>
+    </div>
+
+    <div style="background: #f8fafc; border: 1px solid var(--border-light); border-radius: 8px; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <div>
+            <div style="font-size: 0.82rem; font-weight: 700; text-transform: uppercase; color: var(--muted);">
+                Student Onboarding Invite Code (BR-03)
+            </div>
+            <p style="font-size: 0.88rem; color: var(--muted);">
+                Share this unique code with students in <strong>{{ section.section_name }}</strong> so they can enroll in your roster.
+            </p>
+        </div>
+        <span class="invite-code" style="font-size: 1.15rem; padding: 0.4rem 0.9rem;">{{ section.invite_code }}</span>
+    </div>
+</div>
+
+<div class="card">
+    <div class="dashboard-header" style="margin-bottom: 0.75rem;">
+        <div>
+            <span class="module-tag">F-03 · Roster Moderation (BR-05)</span>
+            <h3 style="margin-top: 0.35rem;">Enrolled Class Roster</h3>
+            <p style="color: var(--muted); font-size: 0.9rem;">
+                Moderate student roster status. Maximum section capacity is <strong>{{ max_students }} active students</strong>.
+            </p>
+        </div>
+        <span class="role-badge {% if active_count >= max_students %}role-treasurer{% else %}role-member{% endif %}" style="font-size: 0.85rem; padding: 0.35rem 0.75rem;">
+            {{ active_count }} / {{ max_students }} Active Students
+        </span>
+    </div>
+
+    {% if memberships %}
+        <div style="overflow-x: auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Student ID</th>
+                        <th>Institutional Email</th>
+                        <th>Status</th>
+                        <th>Joined</th>
+                        <th>Moderation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in memberships %}
+                        <tr>
+                            <td><strong>{{ m.user.full_name }}</strong></td>
+                            <td><code>{{ m.student_id_number }}</code></td>
+                            <td style="color: var(--muted);">{{ m.user.email }}</td>
+                            <td>
+                                {% if m.is_active %}
+                                    <span class="role-badge role-member">ACTIVE</span>
+                                {% else %}
+                                    <span class="role-badge" style="background: #fee2e2; color: #991b1b;">REMOVED</span>
+                                {% endif %}
+                            </td>
+                            <td style="color: var(--muted);">{{ m.joined_at|date:"M d, Y" }}</td>
+                            <td>
+                                <div class="action-group">
+                                    <form method="post" action="{% url 'sections:toggle_member_status' section.section_id m.membership_id %}" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-inline btn-secondary">
+                                            {% if m.is_active %}Deactivate{% else %}Reactivate{% endif %}
+                                        </button>
+                                    </form>
+                                    <form method="post" action="{% url 'sections:remove_member' section.section_id m.membership_id %}" style="display: inline;" onsubmit="return confirm('Remove {{ m.user.full_name }} from this section?');">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-inline btn-danger">Remove</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 2rem 1rem; border: 1px dashed var(--border); border-radius: 8px; margin-top: 0.75rem;">
+            <p style="color: var(--muted); font-size: 0.92rem;">
+                No students have enrolled yet. Share invite code <span class="invite-code">{{ section.invite_code }}</span> with your class.
+            </p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
